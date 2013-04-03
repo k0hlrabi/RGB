@@ -1,0 +1,4 @@
+addPlayer.000,200
+addblock..010,100,020,010,none
+addblock..030,100,020,010,none
+endLevel

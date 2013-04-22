@@ -28,6 +28,8 @@ namespace WindowsGame2
         public Boolean jumping;
         public Boolean Falling;
         public Boolean Physics;
+        public Vector2 pos;
+        public Vector2 lookingAngle = new Vector2(-1, 0);
        
 
 
@@ -50,7 +52,7 @@ namespace WindowsGame2
 
 
         public void Draw(SpriteBatch a){
-            Vector2 pos = new Vector2(posX, posY);
+            pos = new Vector2(posX, posY);
 
            
             a.Draw(PlayerTexture, pos, Color.White);
@@ -74,16 +76,18 @@ namespace WindowsGame2
         public void updateKeyMovement(KeyboardState a, Level lev)
         {
             if (a.IsKeyDown(Keys.Right))
-            {
+            {    lookingAngle = new Vector2(1, 0);
                 if (checkMoveValid(lev, posX + movespeed, posY))
                     posX += movespeed;
+                   
 
             }
             if (a.IsKeyDown(Keys.Left))
             {
-
+                lookingAngle = new Vector2(-1, 0);
                 if (checkMoveValid(lev, posX - movespeed, posY))
                     posX -= movespeed;
+                
 
             }
 

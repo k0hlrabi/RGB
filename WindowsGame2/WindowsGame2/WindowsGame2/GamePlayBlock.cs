@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -12,24 +13,12 @@ using Microsoft.Xna.Framework.Media;
 
 namespace WindowsGame2
 {
-    class line
+    class GamePlayBlock :Block
     {
 
-        List<Vector2> pointsList = new List<Vector2>();
-        Texture2D tex;
-
-        public line(List<Vector2> inputPoints)
+        public GamePlayBlock(Vector2 pos, Texture2D a, int width, int height): base(pos, a)
         {
-            pointsList = inputPoints;
-        }
 
-        public void draw(SpriteBatch a)
-        {
-            foreach(Vector2 x in pointsList){
-
-                Block asss = new Block(x, tex);
-
-            }
 
         }
 

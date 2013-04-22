@@ -11,6 +11,10 @@ using Microsoft.Xna.Framework.Media;
 
 namespace WindowsGame2
 {
+
+    
+ 
+
     /// <summary>
     /// This is the main type for your game
     /// </summary>
@@ -25,6 +29,8 @@ namespace WindowsGame2
         SpriteFont Font1;
         String GameText;
         Boolean GameOver;
+       public int windowWidth;
+       public int windowHeight;
         
         public Game1()
         {
@@ -35,6 +41,8 @@ namespace WindowsGame2
        
         protected override void Initialize()
         {
+            GlobalVariables= GraphicsDevice.Viewport.Width;
+            windowHeight = GraphicsDevice.Viewport.Height;
             awesome.PlayerStartX = 0;
             awesome.PlayerStartY = -100;
             awesome.GameSpaceHeight = 2000;
@@ -88,7 +96,17 @@ namespace WindowsGame2
             {
                 
                 float CameraPosY = MathHelper.Clamp((float)one.posY, -80, 80);
-                cam.Pos = new Vector2(one.posX + 30, CameraPosY);
+                float CameraPosX = cam.Pos.X;
+               
+                if (one.posX >= CameraPosX + 650)
+                {
+                    CameraPosX = CameraPosX + 10f;
+                }
+                if (one.posX <= CameraPosX - 650)
+                {
+                    CameraPosX = CameraPosX - 10f;
+                }
+                cam.Pos = new Vector2(CameraPosX, CameraPosY);
                 KeyboardState a = Keyboard.GetState();
                 one.update(gameTime, a, awesome);
                 GameOver = false;

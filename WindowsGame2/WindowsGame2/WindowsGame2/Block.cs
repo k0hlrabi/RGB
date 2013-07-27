@@ -19,6 +19,9 @@ namespace WindowsGame2
         public Vector2 Position;
         public Texture2D BlockTexture;
         public Rectangle BBox;
+        public int width;
+        public int height;
+        public Color BlockColor;
         
         
 
@@ -28,7 +31,10 @@ namespace WindowsGame2
         {
             Position = pos;
             BlockTexture = a;
-            BBox = new Rectangle((int)Position.X, (int)Position.Y, (int)BlockTexture.Width, (int)BlockTexture.Height);
+            width = BlockTexture.Width;
+            height = BlockTexture.Height;
+            BlockColor = Color.Red;
+            BBox = new Rectangle((int)Position.X, (int)Position.Y, width, height);
         }
         public Block(Vector2 pos, Texture2D a, int width, int height)
         {
@@ -42,13 +48,13 @@ namespace WindowsGame2
         public void draw(SpriteBatch a)
         {
 
-            BBox = new Rectangle((int)Position.X, (int)Position.Y, (int)BlockTexture.Width, (int)BlockTexture.Height);
+            BBox = new Rectangle((int)Position.X, (int)Position.Y, width, height);
            
 
-
+           
 
          
-         a.Draw(BlockTexture, Position, Color.Red);
+         a.Draw(BlockTexture, BBox, BlockColor);
         }
 
 

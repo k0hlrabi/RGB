@@ -18,6 +18,7 @@ namespace WindowsGame2
     {
 
         public List<Block> LevelBlocks = new List<Block>();
+        public List<StyleBlock> StyleBlocks = new List<StyleBlock>();
         public Rectangle GameSpace;
         public int GameSpaceWidth;
         public int GameSpaceHeight;
@@ -49,6 +50,11 @@ namespace WindowsGame2
             LevelBlocks.Add(a);
         }
 
+        public void AddSytleBlock(StyleBlock a)
+        {
+
+            StyleBlocks.Add(a);
+        }
         public void ParseFromTextFile(String file)
         {
             StreamReader tr = new StreamReader(file);
@@ -100,6 +106,11 @@ GameSpace = new Rectangle(-GameSpaceWidth, -GameSpaceHeight, 2*GameSpaceWidth, 2
             for (int x = 0; x < LevelBlocks.Count; x++)
             {
                 LevelBlocks[x].draw(a);
+            }
+            for (int x = 0; x < StyleBlocks.Count; x++)
+            {
+
+                StyleBlocks[x].draw(a);
             }
         }
 

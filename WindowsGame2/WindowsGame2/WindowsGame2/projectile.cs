@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -16,42 +15,73 @@ namespace WindowsGame2
     class projectile: Block
     {
         
-        public Color projColor;
+      
         public Vector2 angle;
         public Boolean active = false;
-        public int speed;
+        public float speed;
         public Player player;
+        
         GraphicsDeviceManager graphics;
         int viewhight;
         int viewWidth;
-        projectile(int velocity, Color color, Vector2 pos, Texture2D a, Player play, GraphicsDeviceManager graphicz, int viewportWidth,int viewportHeight)
-            : base(pos, a)
+       
+        public projectile(float velocity, Color color, Vector2 pos, Texture2D a, int viewportWidth,int viewportHeight)
+          :  base(pos, a){
 
-        {
-            player = play;
+        
+           // player = play;
             speed = velocity;
-            projColor = color;
-            graphics = graphicz;
+            BlockColor = color;
+            angle = new Vector2(-1, 0);
+            width = a.Width / 2;
+            height = a.Height / 2;
+           // graphics = graphicz;
 
+
+        }
+
+        public projectile(projectile a) :base(a.Position, a.BlockTexture)
+        {
+            speed = a.speed;
+            BlockColor = a.BlockColor;
+            width = a.width / 2;
+            height = a.height / 2;
 
         }
 
         public void activate(Vector2 direction)
         {
             active = true;
-            direction = angle;
+            angle = direction;
         }
 
-        public void update()
+
+
+        public void activate(Vector2 direction, Color outputColor)
+        {
+            active = true;
+            angle = direction;
+            BlockColor = outputColor;
+        }
+        public void update(Vector2 newPos)
         {
             
             if (active)
             {
-                Position += angle * speed;
+                Position.X += angle.X*speed;
+                Position.Y += angle.Y*speed;
             }
-            else { }
+            else {
 
-            BBox = new Rectangle((int)Position.X, (int)Position.Y, BlockTexture.Width, BlockTexture.Height);
+                Position = newPos;
+            }
+            
+
+            
+
+            BBox = new Rectangle((int)Position.X, (int)Position.Y, width, height);
+
+            
         }
 
         public void deActivate()
@@ -60,9 +90,8 @@ namespace WindowsGame2
             active = false;
         }
 
-        
 
-
+       
         public bool checkMoveValid(Level a, int x, int y)
         {
             Rectangle GBox = new Rectangle(x, y,  BlockTexture.Width, BlockTexture.Height);
@@ -98,4 +127,6 @@ namespace WindowsGame2
         }
 
     }
+
+    
 }

@@ -17,14 +17,21 @@ namespace WindowsGame2
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Camera2D cam;
+        //Good Chance we'll ditch the player for a constantly updating origin location....Fuck it! I'll do it now!
         Player player;
+        Vector2 Origin;
+        //THERE! I FUCKING DID IT.
         Level level;
-        List<projectile> activeProjectiles;
-        List<projectile> loadedProjectiles;
+        List<projectile> activeProjectiles = new List<projectile>();
+        List<projectile> QueueList = new List<projectile>();
+        List<projectile> loadedProjectiles = new List<projectile>();
         public int currentSeleciton = 0;
-        public ProjHandler(GraphicsDeviceManager mainGraphics, SpriteBatch mainSpriteBatch, Camera2D mainCamera, Player mainPlayer, Level currentLevel)
+        public int currentClip = 0;
+        public int MaxClip = 5;
+        public int numActiveProj = 0;
+        public ProjHandler(SpriteBatch mainSpriteBatch, Camera2D mainCamera, Player mainPlayer, Level currentLevel)
         {
-            graphics = mainGraphics;
+            
             spriteBatch = mainSpriteBatch;
             cam = mainCamera;
             player = mainPlayer;
@@ -36,19 +43,100 @@ namespace WindowsGame2
             loadedProjectiles.Add(a);
         }
 
-        public void fire()
+        public void fire(Vector2 lookin)
         {
-            activeProjectiles.Add(loadedProjectiles[currentSeleciton]);
-            activeProjectiles[currentSeleciton].Position = player.pos;
-            activeProjectiles[currentSeleciton].activate(player.lookingAngle);
+            //currentClip++;
+            if (currentClip < MaxClip)
+            {
+               activeProjectiles.Add( new projectile(loadedProjectiles[currentSeleciton]));
+               activeProjectiles[numActiveProj].activate(player.lookingAngle * 20);
+               numActiveProj++;
+               currentClip++;
+            }
+
+
+
+
+                /*
+                //loadedProjectiles[currentSeleciton].Position = player.pos;
+                //loadedProjectiles[currentSeleciton].angle = lookin;
+                //loadedProjectiles[currentSeleciton].activate(lookin);
+                //activeProjectiles.Add(new projectile(loadedProjectiles[currentSeleciton]));
+                QueueList.Add(new projectile(loadedProjectiles[currentSeleciton]));
+                foreach (projectile i in QueueList)
+                {
+                    //i.angle = lookin;
+                    activeProjectiles.Add(i);
+                    
+                }
+
+                
+
+                foreach (projectile i in activeProjectiles)
+                {
+                    i.activate(lookin);
+                }
+
+                
+                
+                   
+                
+                
+            }
+            else
+            {
+               
+
+                
+            }*/
+
+
+            
+        }
+
+        public void killActive()
+        {
+           List<projectile> blankList = new List<projectile>();
+            activeProjectiles = blankList;
+
+        }
+        public void Reload()
+        {
+            currentClip = 0;
+
+
         }
         public void update()
         {
+            foreach (projectile i in loadedProjectiles)
+            {
+
+                i.update(player.pos);
+            }
+
+           
             
+            for(int x = 0; x < activeProjectiles.Count; x++){
+                projectile a = activeProjectiles[x];
+                a.update(player.pos);
+                if (player.pos.X + 1000 < a.BBox.X || player.pos.X - 1000 > a.BBox.X)
+                {
+
+                    a.deActivate();
+                    activeProjectiles.Remove(a);
+                    numActiveProj--;
+                    
+
+                    
+                }
+
+            }
+              
+             
 
         }
 
-
+        
         public void changeSelection(int selection)
         {
             if (selection < 0)
@@ -62,8 +150,19 @@ namespace WindowsGame2
 
 
         }
-            
-            
+
+        public void draw()
+        {
+            foreach (projectile i in activeProjectiles)
+            {
+
+                i.draw(spriteBatch);
+
+            }
+
+
+
+        }
             public bool checkMoveValid(Level a, int x, int y)
         {
             
